@@ -1,0 +1,18 @@
+{
+    "name": "REST API Library",
+    "description": "A Symfony2 library for writing REST APIs.",
+    "authors": [
+        {
+            "name": "Vic Cherubini",
+            "email": "vcherubini@majorapi.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "Brightmarch": "src"
+        }
+    }
+}
