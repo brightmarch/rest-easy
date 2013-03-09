@@ -1,5 +1,5 @@
 {
-    "name": "REST API Library",
+    "name": "brightmarch/rest-easy",
     "description": "A Symfony2 library for writing REST APIs.",
     "authors": [
         {
