@@ -67,7 +67,7 @@ class Controller extends \Symfony\Bundle\FrameworkBundle\Controller\Controller
      * @param string $view
      * @param array $parameters
      * @param integer $statusCode
-     * @return Response
+     * @return Symfony\Component\HttpFoundation\Response
      */
     public function renderResource($view, array $parameters=[], $statusCode=200)
     {
