@@ -16,12 +16,18 @@ trait HttpJsonMiddlewareMixin
      */
     public function renderResource($view, array $parameters=[], $statusCode=200)
     {
+        $jsonHeader = 'application/json';
         $response = parent::renderResource($view, $parameters, $statusCode);
 
-        $jsonDecoded = json_decode($response->getContent());
-        $jsonEncoded = json_encode($jsonDecoded);
+        // Only do this if they are actually sending JSON.
+        if (false !== stripos($response->headers->get('content-type'), $jsonHeader)) {
+            $jsonDecoded = json_decode($response->getContent());
+            $jsonEncoded = json_encode($jsonDecoded);
 
-        return $response->setContent($jsonEncoded);
+            return $response->setContent($jsonEncoded);
+        } else {
+            return $response;
+        }
     }
 
 }
