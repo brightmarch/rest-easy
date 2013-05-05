@@ -41,7 +41,7 @@ trait HttpAuthorizationMixin
         // Authorization headers are base64 encoded.
         $authorizationHeader = explode(':', base64_decode($this->authorizationHeaderRaw));
         if (2 == count($authorizationHeader)) {
-            $username = strtolower($authorizationHeader[0]);
+            $username = $authorizationHeader[0];
             $apiKey = $authorizationHeader[1];
         }
 
