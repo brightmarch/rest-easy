@@ -22,7 +22,7 @@ trait HttpJsonMiddlewareMixin
         // Only do this if they are actually sending JSON.
         if (false !== stripos($response->headers->get('content-type'), $jsonHeader)) {
             $jsonDecoded = json_decode($response->getContent());
-            $jsonEncoded = json_encode($jsonDecoded);
+            $jsonEncoded = json_encode($jsonDecoded, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
 
             return $response->setContent($jsonEncoded);
         } else {
