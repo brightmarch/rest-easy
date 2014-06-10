@@ -37,7 +37,7 @@ class Controller extends \Symfony\Bundle\FrameworkBundle\Controller\Controller
      * Set a list of content types that this resource supports.
      *
      * @param [string, string, ...]
-     * @return this
+     * @return Controller
      */
     public function resourceSupports()
     {
@@ -51,7 +51,7 @@ class Controller extends \Symfony\Bundle\FrameworkBundle\Controller\Controller
      * Set a list of content types this resource requires.
      *
      * @param [string, string, ...]
-     * @return this
+     * @return Controller
      */
     public function resourceRequires()
     {
@@ -93,11 +93,6 @@ class Controller extends \Symfony\Bundle\FrameworkBundle\Controller\Controller
         return $this->renderResource($view, $parameters, 202);
     }
 
-    /**
-     * Determines if the client can accept one of the media types the server supports.
-     *
-     * @return boolean
-     */
     protected function canClientAcceptThisResponse()
     {
         $this->findAvailableTypes()
@@ -106,11 +101,6 @@ class Controller extends \Symfony\Bundle\FrameworkBundle\Controller\Controller
         return true;
     }
 
-    /**
-     * Determines if the server can support the media type the client has sent.
-     *
-     * @return boolean
-     */
     protected function canServerSupportThisRequest()
     {
         $contentType = $this->getRequest()
@@ -121,7 +111,9 @@ class Controller extends \Symfony\Bundle\FrameworkBundle\Controller\Controller
         $contentType = trim(explode(';', $contentType)[0]);
 
         if (!in_array($contentType, $this->requiredTypes)) {
-            throw new HttpUnsupportedMediaTypeException(sprintf("The media type %s is not supported by this resource.", $contentType));
+            throw new HttpUnsupportedMediaTypeException(
+                sprintf("The media type %s is not supported by this resource.", $contentType)
+            );
         }
 
         return true;
@@ -133,7 +125,7 @@ class Controller extends \Symfony\Bundle\FrameworkBundle\Controller\Controller
 
         return $this;
     }
-    
+
     protected function checkAvailableTypes()
     {
         if (0 === count($this->availableTypes)) {
@@ -146,7 +138,7 @@ class Controller extends \Symfony\Bundle\FrameworkBundle\Controller\Controller
     protected function throwNotAcceptableException()
     {
         $message = "This resource can not respond with a format the client will find acceptable. %s";
-        
+
         // Pop off the last element because it is always */* and a resource can not support it.
         $supportedTypes = $this->supportedTypes;
         array_pop($supportedTypes);
@@ -156,29 +148,27 @@ class Controller extends \Symfony\Bundle\FrameworkBundle\Controller\Controller
         } else {
             $message = sprintf($message, sprintf("This resource supports: [%s].", implode(', ', $supportedTypes)));
         }
-        
+
         throw new HttpNotAcceptableException($message);
     }
 
     private function createResponse($statusCode)
     {
         $memoryUsage = round((memory_get_peak_usage() / 1048576), 4);
-        
+
         $response = new Response;
         $response->setProtocolVersion('1.1');
         $response->setStatusCode($statusCode);
-        $response->headers
-            ->set('X-Men', $this->randomXPerson());
-        $response->headers
-            ->set('X-Memory-Usage', $memoryUsage);
-        
+        $response->headers->set('X-Men', $this->randomXPerson());
+        $response->headers->set('X-Memory-Usage', $memoryUsage);
+
         return $response;
     }
 
     private function findContentType()
     {
         $contentType = current($this->availableTypes);
-        
+
         if ('*/*' != $contentType) {
             $this->contentType = $contentType;
         } elseif (count($this->supportedTypes) > 0) {
@@ -210,9 +200,11 @@ class Controller extends \Symfony\Bundle\FrameworkBundle\Controller\Controller
         $templateExists = $this->container
             ->get('templating')
             ->exists($this->viewTemplateName);
-            
+
         if (!$templateExists) {
-            throw new HttpNotExtendedException(sprintf("The view %s does not exist. While this resource claims it can support this content type, it has no way to render it properly.", $this->viewTemplateName));
+            throw new HttpNotExtendedException(
+                sprintf("The view %s does not exist. While this resource claims it can support this content type, it has no way to render it properly.", $this->viewTemplateName)
+            );
         }
 
         return $this;
@@ -220,13 +212,14 @@ class Controller extends \Symfony\Bundle\FrameworkBundle\Controller\Controller
 
     private function randomXPerson()
     {
-        $xpeople = array('Professor X', 'Cyclops', 'Jean Grey', 'Wolverine',
+        $xpeople = array(
+            'Professor X', 'Cyclops', 'Jean Grey', 'Wolverine',
             'Storm', 'Rogue', 'Gambit', 'Jubilee', 'Beast', 'Morph', 'Iceman',
             'Polaris', 'Archangel', 'Angel', 'Colossus', 'Nightcrawler', 'Shadowcat',
             'Firestar', 'Thunderbird', 'Dazzler'
         );
 
-        $xpeopleCount = count($xpeople)-1;
+        $xpeopleCount = count($xpeople) - 1;
         $xpersonIdx = mt_rand(0, $xpeopleCount);
 
         return $xpeople[$xpersonIdx];
