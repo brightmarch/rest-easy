@@ -45,7 +45,10 @@ trait HttpAuthorizationMixin
             $apiKey = $authorizationHeader[1];
         }
 
-        $this->authorizationHeader = ['username' => $username, 'apiKey' => $apiKey];
+        $this->authorizationHeader = [
+            'username' => $username,
+            'apiKey' => $apiKey
+        ];
 
         return $this;
     }
