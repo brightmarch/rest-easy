@@ -2,7 +2,7 @@
 This is a very small but powerful Symfony2 library for quickly building RESTful services (specifically, HTTP APIs). This tool is a library, and not a bundle.
 
 ## Installation
-Installation is relatively easy. It requires three steps. Start by adding the right dependency to your `composer.json` file and install the new bundle.
+Installation is relatively easy. It requires three steps. Start by adding the right dependency to your `composer.json` file and install the new library.
 
 ```javascript
 "brightmarch/rest-easy": "1.0.0"
@@ -129,7 +129,7 @@ A slightly more advanced controller might find an entity and render it. You want
 You will notice there are two `_links` records. One points directly back to itself, and the other provides an alternative URL to the same resource.
 
 ## Errors
-This bundle supports handling HTTP errors properly. It comes with several exceptions for handling errors. They include:
+This library supports handling HTTP errors properly. It comes with several exceptions for handling errors. They include:
 
 * 400: `HttpBadSyntaxException`
 * 405: `HttpMethodNotAllowedException`
