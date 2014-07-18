@@ -1,5 +1,5 @@
-# Symfony2 REST Bundle
-This is a very small but powerful Symfony2 bundle for quickly building RESTful services (specifically, HTTP APIs).
+# Symfony2 REST Library
+This is a very small but powerful Symfony2 library for quickly building RESTful services (specifically, HTTP APIs). This tool is a library, and not a bundle.
 
 ## Installation
 Installation is relatively easy. It requires three steps. Start by adding the right dependency to your `composer.json` file and install the new bundle.
