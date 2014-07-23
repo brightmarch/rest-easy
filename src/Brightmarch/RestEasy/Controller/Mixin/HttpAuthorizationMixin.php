@@ -11,13 +11,25 @@ trait HttpAuthorizationMixin
     /** @var string */
     private $authorizationHeaderRaw = '';
 
-    private function parseAuthorizationHeader()
+    public function parseAuthorizationHeader()
     {
         // Parses the Authorization header for authenticating the current request.
         $this->findAuthorizationHeader()
             ->splitAuthorizationHeader();
 
         return true;
+    }
+
+    public function getAuthorizationHeaderKey($key)
+    {
+        // Two valid keys of the authorization header array are 'username' and 'apiKey'.
+        $authorizationHeaderValue = null;
+
+        if (array_key_exists($key, $this->authorizationHeader)) {
+            $authorizationHeaderValue = $this->authorizationHeader[$key];
+        }
+
+        return $authorizationHeaderValue;
     }
 
     private function findAuthorizationHeader()
@@ -51,18 +63,6 @@ trait HttpAuthorizationMixin
         ];
 
         return $this;
-    }
-
-    private function getAuthorizationHeaderKey($key)
-    {
-        // Two valid keys of the authorization header array are 'username' and 'apiKey'.
-        $authorizationHeaderValue = null;
-
-        if (array_key_exists($key, $this->authorizationHeader)) {
-            $authorizationHeaderValue = $this->authorizationHeader[$key];
-        }
-
-        return $authorizationHeaderValue;
     }
 
 }
