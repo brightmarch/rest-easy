@@ -6,8 +6,10 @@ trait HttpJsonMiddlewareMixin
 {
 
     /**
-     * This middleware method takes content from a Symfony\Component\HttpFoundation\Response object
-     * and compresses the JSON by decoding and then encoding it.
+     * This middleware method takes content from a
+     * Symfony\Component\HttpFoundation\Response object
+     * and pretty prints the JSON if the response is of
+     * Content-Type application/json.
      *
      * @param string $view
      * @param array $parameters
