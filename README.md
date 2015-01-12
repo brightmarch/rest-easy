@@ -168,7 +168,13 @@ $ curl -v -H "Accept: invalid/type" http://example.com/
 }
 ```
 
-If the error code of an exception can not be determine, the default 500 error code is used. More `HttpException` classes will be added as needed.
+If the error code of an exception can not be determine, the default 500 error code should be used. More `HttpException` classes will be added as needed. If there is a status code you need and a specific class is not provided for it, you can use the root `HttpException` exception and pass the status code as the second parameter to the constructor.
+
+```php
+<?php
+
+throw new HttpException("I am not a teapot.", 418);
+```
 
 ## JSON Middleware
 This library has a pluggable middleware architecture using PHP Traits (called Mixins). You can use the `HttpJsonMiddlewareMixin` mixin to enable pretty printed JSON in your responses.
