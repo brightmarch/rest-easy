@@ -5,7 +5,7 @@ This is a very small but powerful Symfony2 library for quickly building RESTful 
 Installation is relatively easy. It requires three steps. Start by adding the right dependency to your `composer.json` file and install the new library.
 
 ```javascript
-"brightmarch/rest-easy": "1.0.1"
+"brightmarch/rest-easy": "1.1.0"
 ```
 
 You can safely assume that what is in `master` is always up to date.
@@ -55,6 +55,8 @@ class AccountsController extends RestController
 ```
 
 You must describe what content types this resource supports. This means if a client sends an Accept header with a content type this resource does not accept, a `406 Unacceptable` response will be returned. Because this resource supports three content types, you must have three different views: accounts.json.twig, accounts.xml.twig, and accounts.html.twig.
+
+This library does not support any type of serialization and leaves rendering your response entirely up to you. It is our recommendation, however, that you implement your responses as you would an HTML view. By implementing a JSON or XML response as a view, you gain the ability to add view-level logic (date/locale formatting, for instance) directly in the view. Additionally, by using a view as your response, you are able to see in one single file what your response will look like.
 
 ### index.json.twig
 ```javascript
@@ -126,7 +128,7 @@ A slightly more advanced controller might find an entity and render it. You want
 {% endautoescape %}
 ```
 
-You will notice there are two `_links` records. One points directly back to itself, and the other provides an alternative URL to the same resource.
+You will notice there are two `_links` records. One points directly back to itself, and the other provides an alternative URL to the same resource. Again, by building this JSON view like you would an HTML view, you gain the ability to render as many links as you want without relying on complex serialization code.
 
 ## Errors
 This library supports handling HTTP errors properly. It comes with several exceptions for handling errors. They include:
@@ -140,7 +142,7 @@ This library supports handling HTTP errors properly. It comes with several excep
 * 404: `HttpNotFoundException`
 * 401: `HttpUnauthorizedException`
 
-You are responsible for rendering your errors. You should familiarize yourself with catching kernel exceptions in Symfony using an Event Listener to automatically return all errors as a RESTful response. A simple error response template might look like this:
+You are responsible for catching and rendering your errors. You should familiarize yourself with catching kernel exceptions in Symfony using an Event Listener to automatically return all errors as a RESTful response. A simple error response template might look like this:
 
 ```javascript
 {% autoescape false %}
@@ -168,7 +170,32 @@ $ curl -v -H "Accept: invalid/type" http://example.com/
 
 If the error code of an exception can not be determine, the default 500 error code is used. More `HttpException` classes will be added as needed.
 
+## JSON Middleware
+This library has a pluggable middleware architecture using PHP Traits (called Mixins). You can use the `HttpJsonMiddlewareMixin` mixin to enable pretty printed JSON in your responses.
+
+To enable this middleware, simply `use` it in any class. The `renderResource()` method will be overwritten to pretty print your JSON responses (non-JSON responses will be left alone).
+
+```php
+<?php
+
+use Brightmarch\RestEasy\Controller\Mixin\HttpJsonMiddlewareMixin;
+
+class AccountsController extends RestController
+{
+
+    use HttpJsonMiddlewareMixin;
+
+    public function indexAction()
+    {
+        // ...
+
+        return $this->renderResource('...');
+    }
+
+}
+```
+
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2012-2014 Vic Cherubini, Bright March, LLC
+Copyright (c) 2012-2015 Vic Cherubini, Bright March, LLC
