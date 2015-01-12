@@ -5,7 +5,7 @@ This is a very small but powerful Symfony2 library for quickly building RESTful 
 Installation is relatively easy. It requires three steps. Start by adding the right dependency to your `composer.json` file and install the new library.
 
 ```javascript
-"brightmarch/rest-easy": "1.0.0"
+"brightmarch/rest-easy": "1.0.1"
 ```
 
 You can safely assume that what is in `master` is always up to date.
